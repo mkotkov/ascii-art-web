@@ -18,9 +18,9 @@ func AsciiArt(input string, fonts string, page http.ResponseWriter, fontFolder s
         return
     }
 
-    input = strings.Replace(input, "\\n", "\n", -1) // change "\\n" to "\n"
-    inputText := strings.Split(input, "\n")
-    fontString := strings.Split(string(data), "\n")
+    input = strings.Replace(input, "\\n", "\n" , -1)// change "\\n" to "\n"
+    inputText := strings.Split(input, getNewlineSeparator([]byte(input)))
+    fontString := strings.Split(string(data), getNewlineSeparator(data))
 
     for _, text := range inputText {
         if text == "" {
@@ -50,5 +50,12 @@ func getLetter(c rune) (int, int) {
 }
 
 func error(page http.ResponseWriter) {
-    http.Error(page, "Invalid input. Usage: go run . [STRING] [BANNER]\nExample: go run . something standard", http.StatusBadRequest)
+    http.Error(page, "Invalid input.", http.StatusBadRequest)
+}
+
+func getNewlineSeparator(data []byte) string {
+    if strings.ContainsRune(string(data), '\r') {
+        return "\r\n" // Windows-style
+    }
+    return "\n" // Unix-style
 }

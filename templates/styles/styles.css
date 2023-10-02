@@ -22,11 +22,17 @@ h1{
 
 
 .container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    display: block;
+	margin-left: 20%;
 }
+
+.asciiart{
+	margin-top: 5rem;
+	overflow: auto;
+	width: 75rem;
+	height: 25rem;
+}
+
 
 .form{
     width: 75rem;

@@ -1,3 +1,3 @@
-module main.go
+module ascii-art-web
 
 go 1.21.1

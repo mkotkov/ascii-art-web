@@ -1,38 +1,82 @@
 package main
 
 import (
-	"ascii-art-web/static"
-	"html/template"
-	"fmt"
-	"net/http"
+    "ascii-art-web/static"
+    "html/template"
+    "net/http"
+    "bytes"
 )
 
-func asciiart(w http.ResponseWriter, r *http.Request) {
+type banner struct {
+    ASCIIArt string
+}
+
+type responseWriterWithBuffer struct {
+    http.ResponseWriter
+    buf *bytes.Buffer
+}
+
+func (rw *responseWriterWithBuffer) Write(p []byte) (int, error) {
+    return rw.buf.Write(p)
+}
+
+func asciiart(input, fonts string) string {
+    fontFolder := "static/fonts"
+    var buf bytes.Buffer
+    rw := &responseWriterWithBuffer{buf: &buf}
+    ascii_art.AsciiArt(input, fonts, rw, fontFolder)
+    return buf.String()
+}
+
+func handleRequest() {
+    http.HandleFunc("/", mainPage)
+    http.HandleFunc("/ascii-art", asciiArtHandler)
+    http.ListenAndServe(":8080", nil)
+    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+    http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("templates"))))
+}
+
+func mainPage(w http.ResponseWriter, r *http.Request) {
+    http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+    http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("templates"))))
+    tmpl, err := template.ParseFiles("templates/index.html", "templates/styles/styles.css")
+
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    tmpl.Execute(w, "")
+}
+
+func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
+    tmpl, err := template.ParseFiles("templates/index.html", "templates/styles/styles.css")
+
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+      
     r.ParseForm()
     input := r.FormValue("input")
     fonts := r.FormValue("fonts")
-    
-    // Проверка наличия данных в форме
+
     if input == "" || fonts == "" {
         http.Error(w, "Missing input data", http.StatusBadRequest)
         return
     }
-    
-    fontFolder := "static/fonts"
-    ascii_art.AsciiArt(input, fonts, w, fontFolder)
-}
 
-func handleRequest() {
-    http.HandleFunc("/", main_page)
-    http.HandleFunc("/ascii-art", asciiart)
-    http.ListenAndServe(":3535", nil)
-}
+    asciiArtResult := asciiart(input, fonts)
 
-func main_page(w http.ResponseWriter, r *http.Request) {
-	tmpl, _ := template.ParseFiles("temlates/index.html")
-	tmpl.Execute(w, nil)
+    pageData := banner{
+        ASCIIArt: asciiArtResult,
+    }
+
+    tmpl.Execute(w, pageData)
 }
 
 func main() {
     handleRequest()
 }
+
+
