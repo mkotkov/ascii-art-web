@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'IBM Plex Mono', monospace;
+    background: #F2F2F2;
+}
+
+h1{
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.06rem; 
+    margin-top: 3.5rem;
+    margin-bottom: 3rem;
+}
+
+
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.form{
+    width: 75rem;
+    height: 15rem;
+	padding-left: 2.7rem;
+    border-radius: 0.63rem;
+    background: #FFF;
+    box-shadow: 0px 4px 14px 0px rgba(139, 139, 139, 0.25);
+}
+
+.tabs {
+	display: flex;
+	background-color: #fff;
+	box-shadow: 0 0 1px 0 rgba(#185ee0, 0.15), 0 6px 12px 0 rgba(#185ee0, 0.15);
+	padding: 0.75rem;
+}
+
+.fonts {
+	display: flex;
+    align-items: center;
+	background-color: #fff;
+	box-shadow: 0 0 1px 0 rgba(#185ee0, 0.15), 0 6px 12px 0 rgba(#185ee0, 0.15);
+	padding: 0.75rem;
+}
+
+input[type="radio"] {
+	display: none;
+}
+
+.tab {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 2rem;
+	width: 6rem;
+	font-size: 0.8rem;
+	font-weight: 400;
+	cursor: pointer;
+	transition: color 0.15s ease-in;
+}
+
+input[id="radio-1"] {
+	&:checked {
+		& ~ .glider {
+			transform: translateX(0);
+		}
+	}
+}
+
+input[id="radio-2"] {
+	&:checked {
+		& ~ .glider {
+			transform: translateX(100%);
+		}
+	}
+}
+
+input[id="radio-3"] {
+	&:checked {
+		& ~ .glider {
+			transform: translateX(200%);
+		}
+	}
+}
+
+.glider {
+	position: absolute;
+	display: flex;
+	height: 2rem;
+	width: 6rem;
+    border-bottom: 2px solid black;
+	z-index: 1;
+	transition: 0.25s ease-out;
+}
+
+
+
+.inputs{
+	display: flex;
+}
+
+textarea{
+    width: 52.5rem;
+	height: 8.75rem; 
+	resize: none;
+	border-radius: 0.625rem;
+	border: 1px solid #A9A9A9;
+	padding: 1rem;
+}
+
+.btns{
+	display: block;
+	width: 15rem;
+}
+
+button{
+	display:inline-block;
+    width: 15rem;
+    height: 3.5rem;
+	font-size: 1rem; 
+	font-weight: 700;
+	margin-left: 2rem;
+}
+
+button[type="submit"]{
+    color: white;
+    border-radius: 0.3125rem;
+    background: #000; 
+	border:none;
+}
+
+button[type="reset"]{
+    color: black;
+    border-radius: 0.3125rem;
+	background: none;
+	border: 2px solid black;
+	margin-bottom: 1.5rem;
+}
